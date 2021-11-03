@@ -1,0 +1,1 @@
+export const USE_CASE_KEY = Symbol("USE_CASE_KEY");
