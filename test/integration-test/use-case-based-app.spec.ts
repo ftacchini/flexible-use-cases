@@ -10,7 +10,7 @@ import { DummyEventSource } from "flexible-dummy-source";
 import { AsyncContainerModule } from "inversify";
 import { ExplicitControllerLoader } from "flexible-decorators";
 import { UseCasesFrameworkModuleBuilder } from "../../src/framework";
-import { BasicUseCase } from "./test-use-cases";
+import { BasicUseCase, ConditionsUseCase, ExternalConditionsUseCase } from "./test-use-cases";
 
 describe(`UseCaseBasedApp`, () => {
 
@@ -28,7 +28,9 @@ describe(`UseCaseBasedApp`, () => {
 
         let frameworkModule = UseCasesFrameworkModuleBuilder.instance
             .withUseCaseLoader(new ExplicitControllerLoader([
-                BasicUseCase
+                BasicUseCase,
+                ConditionsUseCase,
+                ExternalConditionsUseCase
             ]))
             .build();
 
@@ -80,4 +82,53 @@ describe(`UseCaseBasedApp`, () => {
         expect(response[0].responseStack[0]).toBe(data);
     })
 
+
+    it("should respond to route request with pre and post conditions", async () => {
+        //ARRANGE
+        const data = { data: "data" };
+        const routeData = { routeData: "routeData" };
+
+        //ACT
+        await app.run();
+
+        const response = await eventSource.generateEvent({
+            data: data,
+            eventType: "conditions",
+            routeData: routeData
+        });
+
+        //ASSERT
+        expect(response[0].responseStack[0]).toEqual({ step: "pre1", data });
+        expect(response[0].responseStack[1]).toEqual({ step: "pre2", data });
+        expect(response[0].responseStack[2]).toEqual({ step: "steps", data });
+        expect(response[0].responseStack[3]).toEqual({ step: "post1", data });
+        expect(response[0].responseStack[4]).toEqual({ step: "post2", data });
+    })
+
+
+    it("should respond to route request with external pre and post conditions", async () => {
+        //ARRANGE
+        const data = { data: "data" };
+        const routeData = { routeData: "routeData" };
+
+        //ACT
+        await app.run();
+
+        const response = await eventSource.generateEvent({
+            data: data,
+            eventType: "externalConditions",
+            routeData: routeData
+        });
+
+        //ASSERT
+        expect(response[0].responseStack[0]).toEqual({
+            configValue: "a",
+            eventType: "externalConditions"
+        });
+        expect(response[0].responseStack[1]).toEqual({ step: "steps", data });
+        expect(response[0].responseStack[2]).toEqual({
+            configValue: "b",
+            eventType: "externalConditions"
+        });
+    })
 });

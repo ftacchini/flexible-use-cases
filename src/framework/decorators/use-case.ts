@@ -12,6 +12,10 @@ export const UseCase = function attributeDefinition(
             Reflect.defineMetadata(USE_CASE_KEY, [], target);
         }
 
+        if(!useCaseDefinition.name) {
+            useCaseDefinition.name = target.name;
+        }
+
         var useCases: UseCaseDefinition[] = Reflect.getMetadata(USE_CASE_KEY, target);
         useCases.push(useCaseDefinition);
     }
