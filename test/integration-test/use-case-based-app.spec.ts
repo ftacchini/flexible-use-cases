@@ -4,9 +4,9 @@ import {
     FlexibleApp,
     FlexibleEventSourceModule,
     FlexibleAppBuilder,
-    SilentLoggerModule
+    SilentLoggerModule,
+    DummyEventSource
 } from "flexible-core";
-import { DummyEventSource } from "flexible-dummy-source";
 import { AsyncContainerModule } from "inversify";
 import { ExplicitControllerLoader } from "flexible-decorators";
 import { UseCasesFrameworkModuleBuilder } from "../../src/framework";
