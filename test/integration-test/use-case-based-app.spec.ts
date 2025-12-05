@@ -4,10 +4,10 @@ import {
     FlexibleApp,
     FlexibleEventSourceModule,
     FlexibleAppBuilder,
-    SilentLoggerModule
+    SilentLoggerModule,
+    DummyEventSource
 } from "flexible-core";
-import { DummyEventSource } from "flexible-dummy-source";
-import { AsyncContainerModule } from "inversify";
+import { ContainerModule } from "inversify";
 import { ExplicitControllerLoader } from "flexible-decorators";
 import { UseCasesFrameworkModuleBuilder } from "../../src/framework";
 import { BasicUseCase, ConditionsUseCase, ExternalConditionsUseCase } from "./test-use-cases";
@@ -22,8 +22,8 @@ describe(`UseCaseBasedApp`, () => {
 
         let eventSourceModule: FlexibleEventSourceModule = {
             getInstance: () => eventSource,
-            container: new AsyncContainerModule(async () => { }),
-            isolatedContainer: new AsyncContainerModule(async () => { })
+            container: new ContainerModule(() => { }),
+            isolatedContainer: new ContainerModule(() => { })
         };
 
         let frameworkModule = UseCasesFrameworkModuleBuilder.instance
