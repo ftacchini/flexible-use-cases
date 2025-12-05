@@ -1,6 +1,6 @@
 import { FlexibleFrameworkModule } from "flexible-core";
 import { ControllerLoader } from "flexible-decorators";
-import { AsyncContainerModule, Container, interfaces } from "inversify";
+import { ContainerModule, Container } from "inversify";
 import { UseCasesFramework } from "./use-cases-framework";
 import { UseCasesFactory } from "./loader/use-cases-factory";
 import { USE_CASES_FRAMEWORK_TYPES } from "./use-cases-framework-types";
@@ -9,16 +9,11 @@ export class UseCasesFrameworkModule implements FlexibleFrameworkModule {
 
     constructor(
         private controllerLoader: ControllerLoader
-    ) { 
+    ) {
     }
 
-    public get isolatedContainer(): AsyncContainerModule {
-        var module = new AsyncContainerModule(async (
-            bind: interfaces.Bind,
-            unbind: interfaces.Unbind,
-            isBound: interfaces.IsBound,
-            rebind: interfaces.Rebind) => {
-
+    public get isolatedContainer(): ContainerModule {
+        var module = new ContainerModule(({ bind, unbind, isBound, rebind }) => {
             isBound(USE_CASES_FRAMEWORK_TYPES.USE_CASES_FRAMEWORK) || bind(USE_CASES_FRAMEWORK_TYPES.USE_CASES_FRAMEWORK).to(UseCasesFramework);
             isBound(USE_CASES_FRAMEWORK_TYPES.USE_CASES_LOADER) || bind(USE_CASES_FRAMEWORK_TYPES.USE_CASES_LOADER).toConstantValue(this.controllerLoader);
             isBound(USE_CASES_FRAMEWORK_TYPES.USE_CASES_FACTORY) || bind(USE_CASES_FRAMEWORK_TYPES.USE_CASES_FACTORY).to(UseCasesFactory);
@@ -27,12 +22,8 @@ export class UseCasesFrameworkModule implements FlexibleFrameworkModule {
         return module;
     }
 
-    public get container(): AsyncContainerModule {
-        var module = new AsyncContainerModule(async (
-            bind: interfaces.Bind,
-            unbind: interfaces.Unbind,
-            isBound: interfaces.IsBound,
-            rebind: interfaces.Rebind) => {
+    public get container(): ContainerModule {
+        var module = new ContainerModule(({ bind, unbind, isBound, rebind }) => {
         });
 
         return module;
