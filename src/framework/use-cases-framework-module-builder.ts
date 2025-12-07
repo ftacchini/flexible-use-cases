@@ -3,15 +3,10 @@ import { UseCasesFrameworkModule } from "./use-cases-framework-module";
 import { PathUseCaseLoader } from "./loader";
 
 export class UseCasesFrameworkModuleBuilder {
-    
+
     private controllerLoader: ControllerLoader;
 
-    private static _instance: UseCasesFrameworkModuleBuilder;
-    public static get instance() {
-        return this._instance || (this._instance = new UseCasesFrameworkModuleBuilder());
-    }
-
-    private constructor() {
+    constructor() {
         this.reset();
     }
 
