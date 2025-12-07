@@ -9,7 +9,7 @@ import {
 } from "flexible-core";
 import { ContainerModule } from "inversify";
 import { ExplicitControllerLoader } from "flexible-decorators";
-import { UseCasesFrameworkModuleBuilder } from "../../src/framework";
+import { UseCasesFrameworkModule } from "../../src/framework";
 import { BasicUseCase, ConditionsUseCase, ExternalConditionsUseCase } from "./test-use-cases";
 
 describe(`UseCaseBasedApp`, () => {
@@ -26,7 +26,7 @@ describe(`UseCaseBasedApp`, () => {
             isolatedContainer: new ContainerModule(() => { })
         };
 
-        let frameworkModule = UseCasesFrameworkModuleBuilder.instance
+        let frameworkModule = UseCasesFrameworkModule.builder()
             .withUseCaseLoader(new ExplicitControllerLoader([
                 BasicUseCase,
                 ConditionsUseCase,

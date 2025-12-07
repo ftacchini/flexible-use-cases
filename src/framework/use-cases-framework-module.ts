@@ -4,8 +4,17 @@ import { ContainerModule, Container } from "inversify";
 import { UseCasesFramework } from "./use-cases-framework";
 import { UseCasesFactory } from "./loader/use-cases-factory";
 import { USE_CASES_FRAMEWORK_TYPES } from "./use-cases-framework-types";
+import { UseCasesFrameworkModuleBuilder } from "./use-cases-framework-module-builder";
 
 export class UseCasesFrameworkModule implements FlexibleFrameworkModule {
+
+    /**
+     * Creates a new builder for constructing UseCasesFrameworkModule instances.
+     * @returns A new UseCasesFrameworkModuleBuilder instance
+     */
+    public static builder(): UseCasesFrameworkModuleBuilder {
+        return new UseCasesFrameworkModuleBuilder();
+    }
 
     constructor(
         private controllerLoader: ControllerLoader
