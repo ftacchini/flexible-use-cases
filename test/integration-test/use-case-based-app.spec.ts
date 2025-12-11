@@ -3,7 +3,6 @@ import "jasmine";
 import {
     FlexibleApp,
     FlexibleEventSourceModule,
-    FlexibleAppBuilder,
     SilentLoggerModule,
     DummyEventSource
 } from "flexible-core";
@@ -34,7 +33,7 @@ describe(`UseCaseBasedApp`, () => {
             ]))
             .build();
 
-        app = FlexibleAppBuilder.instance
+        app = FlexibleApp.builder()
             .withLogger(new SilentLoggerModule())
             .addEventSource(eventSourceModule)
             .addFramework(frameworkModule)
